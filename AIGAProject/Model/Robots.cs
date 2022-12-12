@@ -50,6 +50,7 @@ namespace AIGAProject.Model
     class Robots
     {
         List<Robot> _robotList = new List<Robot>();
+        Point _startLocation;
         int _stepCounts;
         public List<Robot> RobotList
         {
@@ -61,6 +62,7 @@ namespace AIGAProject.Model
 
         public Robots(Point startLocation, int robotCounts, int stepCounts)
         {
+            _startLocation = startLocation;
             _stepCounts = stepCounts;
             for (int i = 0; i < robotCounts; i++)
             {
@@ -68,11 +70,90 @@ namespace AIGAProject.Model
             }
         }
 
-        public void Evaluate(Point goalPoint)
+        public void StartToMove(Map map)
         {
-            List<Robot> nextGeneration = new List<Robot>();
-            RobotResults robotResults = new RobotResults(_robotList, goalPoint, _stepCounts);
-            _robotList = robotResults.GetNextGenerations();
+            foreach (Robot robot in _robotList)
+            {
+                robot.StartToMove(map);
+            }
+        }
+
+        //剔除前 50% 離最遠的傢伙
+        public void Selection(Point goalPoint)
+        {
+            List<RobotResult> robotResults = new List<RobotResult>();
+            int count = _robotList.Count;
+            for (int i = 0; i < count / 2; i++)
+            {
+                int index = FindMaxDistanceRobotIndex(goalPoint);
+                _robotList.RemoveAt(index);
+            }
+        }
+
+        int FindMaxDistanceRobotIndex(Point goalPoint)
+        {
+            List<RobotResult> robotResults = new List<RobotResult>();
+            for (int i = 0; i < _robotList.Count; i++)
+            {
+                robotResults.Add(new RobotResult(i, _robotList[i].Location));
+            }
+            Point point = new Point(int.MinValue, int.MinValue);
+            int maxRobotIndex = 0;
+            foreach (RobotResult result in robotResults)
+            {
+                if (GetDistance(point, goalPoint) < GetDistance(result.Location, goalPoint))
+                {
+                    point = result.Location;
+                    maxRobotIndex = result.Index;
+                }
+            }
+            return maxRobotIndex;
+        }
+
+        double GetDistance(Point p1, Point p2)
+        {
+            int x = Math.Abs(p1.X - p2.X);
+            int y = Math.Abs(p1.Y - p2.Y);
+            return Math.Abs(x ^ 2 - y ^ 2); //畢氏
+        }
+
+        public void Crossover()
+        {
+            List<Robot> childs = new List<Robot>();
+
+            for (int i = 0; i < _robotList.Count; i++)
+            {
+                if (i != _robotList.Count - 1)
+                {
+                    childs.Add(Crossover(_robotList[i], _robotList[i + 1], _stepCounts));
+                }
+                else //尾跟頭
+                {
+                    childs.Add(Crossover(_robotList[i], _robotList[0], _stepCounts));
+                }
+            }
+
+            _robotList.AddRange(childs);
+        }
+
+        Robot Crossover(Robot robotPapa, Robot robotMama, int stepCounts)
+        {
+            int midPoint = stepCounts / 2;
+            Steps newSteps = new Steps();
+            for (int i = 0; i < midPoint; i++)
+            {
+                newSteps.Add(robotPapa.Steps.GetStep(i));
+            }
+            for (int i = midPoint; i < stepCounts; i++)
+            {
+                newSteps.Add(robotMama.Steps.GetStep(i));
+            }
+            return new Robot(_startLocation, newSteps);
+        }
+
+        public void Mutation()
+        {
+
         }
     }
 
@@ -82,19 +163,9 @@ namespace AIGAProject.Model
         List<Robot> lastGeneration;
         Point goalPoint;
         int _stepCounts;
-        public RobotResults(List<Robot> list, Point goal, int stepCounts)
-        {
-            lastGeneration = list;
-            goalPoint = goal;
-            _stepCounts = stepCounts;
-            for (int i = 0; i < list.Count; i++)
-            {
-                robotResults.Add(new RobotResult(i, list[i].Location));
-            }
-        }
 
         //目前只看最短路徑
-        public List<Robot> GetNextGenerations()
+        public List<Robot> NextGenerations()
         {
             List<Robot> nextGenerationParents = new List<Robot>();
             int count = lastGeneration.Count;
@@ -111,49 +182,15 @@ namespace AIGAProject.Model
             return nextGeneration;
         }
 
-        int FindMinDistanceRobotIndex()
-        {
-            Point point = new Point(0, 0);
-            int maxRobotIndex = -1;
-            foreach(RobotResult result in robotResults)
-            {
-                if (GetDistance(point, goalPoint) > GetDistance(result.Location, goalPoint))
-                {
-                    point = result.Location;
-                    maxRobotIndex = result.Index;
-                }
-            }
-            return maxRobotIndex;
-        }
+
 
         List<Robot> Reproduce(List<Robot> parents, int stepCounts)
         {
-            List<Robot> childs = new List<Robot>();
-            int count = parents.Count;
-
-            for (int i = 0; i < count; i++)
-            {
-                if (i != count - 1)
-                {
-                    childs.Add(Crossover(parents[i], parents[i + 1], stepCounts));
-                } else //尾跟頭
-                {
-                    childs.Add(Crossover(parents[i], parents[0], stepCounts));
-                }
-            }
+            
         }
 
-        Robot Crossover(Robot papa, Robot mama, int stepCounts)
-        {
-            int midPoint = stepCounts / 2;
-            Steps newSteps = new Steps();
-        }
+        
 
-        double GetDistance(Point p1, Point p2)
-        {
-            int x = Math.Abs(p1.X - p2.X);
-            int y = Math.Abs(p1.Y - p2.Y);
-            return Math.Abs(x ^ 2 - y ^ 2); //畢氏
-        }
+        
     }
 }

@@ -19,13 +19,13 @@ namespace AIGAProject.Model
 
     class Steps
     {
-        List<Step> steps = new List<Step>();
+        List<Step> _steps = new List<Step>();
 
         public int Count
         {
             get
             {
-                return steps.Count;
+                return _steps.Count;
             }
         }
 
@@ -37,7 +37,7 @@ namespace AIGAProject.Model
                 Step step = new Step();
                 step.Direction = (Direction)rand.Next(Enum.GetNames(typeof(Direction)).Length);
                 step.Count = rand.Next(0, 10);
-                steps.Add(step);
+                _steps.Add(step);
             }
         }
 
@@ -48,12 +48,12 @@ namespace AIGAProject.Model
 
         public void Add(Step step)
         {
-
+            _steps.Add(step);
         }
 
         public Step GetStep(int index)
         {
-            return steps[index];
+            return _steps[index];
         }
 
     }
