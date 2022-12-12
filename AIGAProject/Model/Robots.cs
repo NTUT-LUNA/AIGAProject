@@ -81,7 +81,6 @@ namespace AIGAProject.Model
         //剔除前 50% 離最遠的傢伙
         public void Selection(Point goalPoint)
         {
-            List<RobotResult> robotResults = new List<RobotResult>();
             int count = _robotList.Count;
             for (int i = 0; i < count / 2; i++)
             {
@@ -155,42 +154,5 @@ namespace AIGAProject.Model
         {
 
         }
-    }
-
-    class RobotResults
-    {
-        List<RobotResult> robotResults = new List<RobotResult>();
-        List<Robot> lastGeneration;
-        Point goalPoint;
-        int _stepCounts;
-
-        //目前只看最短路徑
-        public List<Robot> NextGenerations()
-        {
-            List<Robot> nextGenerationParents = new List<Robot>();
-            int count = lastGeneration.Count;
-            for (int i = 0; i < count / 2; i++)
-            {
-                int index = FindMinDistanceRobotIndex();
-                nextGenerationParents.Add(lastGeneration[index]);
-                lastGeneration.RemoveAt(index);
-            }
-
-            List<Robot> nextGeneration = new List<Robot>();
-            nextGeneration = Reproduce(nextGenerationParents, _stepCounts);
-            nextGeneration = Mutation(nextGeneration);
-            return nextGeneration;
-        }
-
-
-
-        List<Robot> Reproduce(List<Robot> parents, int stepCounts)
-        {
-            
-        }
-
-        
-
-        
     }
 }
