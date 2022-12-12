@@ -6,6 +6,8 @@ namespace AIGAProject.Model
 {
     class Step
     {
+        const int MOVE_COUNT_MIN = 0;
+        const int MOVE_COUNT_MAX = 10;
         public Direction Direction
         {
             get; set;
@@ -14,6 +16,13 @@ namespace AIGAProject.Model
         public int Count
         {
             get; set;
+        }
+
+        public Step()
+        {
+            var rand = new Random();
+            Direction = (Direction)rand.Next(Enum.GetNames(typeof(Direction)).Length);
+            Count = rand.Next(MOVE_COUNT_MIN, MOVE_COUNT_MAX);
         }
     }
 
@@ -29,15 +38,19 @@ namespace AIGAProject.Model
             }
         }
 
+        public List<Step> FullSteps
+        {
+            get
+            {
+                return _steps;
+            }
+        }
+
         public Steps(int counts)
         {
             for (int i = 0; i < counts; i++)
-            {
-                var rand = new Random();
-                Step step = new Step();
-                step.Direction = (Direction)rand.Next(Enum.GetNames(typeof(Direction)).Length);
-                step.Count = rand.Next(0, 10);
-                _steps.Add(step);
+            {       
+                _steps.Add(new Step());
             }
         }
 
@@ -51,10 +64,9 @@ namespace AIGAProject.Model
             _steps.Add(step);
         }
 
-        public Step GetStep(int index)
+        public void SetStep(int index, Step step)
         {
-            return _steps[index];
+            _steps[index] = step;
         }
-
     }
 }

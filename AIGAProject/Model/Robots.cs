@@ -17,14 +17,6 @@ namespace AIGAProject.Model
 
         Steps _steps;
 
-        public Steps Steps
-        {
-            get
-            {
-                return _steps;
-            }
-        }
-
         public Robot(Point startLocation, int stepCounts)
         {
             _location = startLocation;
@@ -41,8 +33,27 @@ namespace AIGAProject.Model
         {
             for (int nowDoingStepNo = 0; nowDoingStepNo < _steps.Count; nowDoingStepNo++)
             {
-                Step step = _steps.GetStep(nowDoingStepNo);
+                Step step = _steps.FullSteps[nowDoingStepNo];
                 _location = map.GetLocationResult(Location, step);
+            }
+        }
+
+        public Step GetStep(int index)
+        {
+            return _steps.FullSteps[index];
+        }
+
+        public void Mutation(double mutationRate)
+        {
+            //每一個 Step 獨立計算是否突變
+            var rand = new Random();
+            for (int i = 0; i < _steps.Count; i++)
+            {
+                if (rand.NextDouble() < mutationRate) //發生突變
+                {
+                    Step step = new Step();
+                    _steps.SetStep(i, step);
+                }
             }
         }
     }
@@ -141,18 +152,21 @@ namespace AIGAProject.Model
             Steps newSteps = new Steps();
             for (int i = 0; i < midPoint; i++)
             {
-                newSteps.Add(robotPapa.Steps.GetStep(i));
+                newSteps.Add(robotPapa.GetStep(i));
             }
             for (int i = midPoint; i < stepCounts; i++)
             {
-                newSteps.Add(robotMama.Steps.GetStep(i));
+                newSteps.Add(robotMama.GetStep(i));
             }
             return new Robot(_startLocation, newSteps);
         }
 
-        public void Mutation()
+        public void Mutation(double mutationRate)
         {
-
+            foreach (Robot robot in _robotList)
+            {
+                robot.Mutation(mutationRate);
+            }
         }
     }
 }

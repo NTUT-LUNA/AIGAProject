@@ -11,6 +11,7 @@ namespace AIGAProject.Model
         const int NUMBER_OF_ROBOTS = 10;
         const int NUMBER_OF_STEPS = 10;
         const int NUMBER_OF_GENERATIONS = 10;
+        const double MUTATION_RATE = 0.05;
 
         public Simulation(Map map)
         {
@@ -20,14 +21,16 @@ namespace AIGAProject.Model
 
         public void StartSimulation()
         {
-            for (int i = 0; i < NUMBER_OF_GENERATIONS; i++)
+            for (int generations = 0; generations < NUMBER_OF_GENERATIONS; generations++)
             {
                 //機器人動
                 robots.StartToMove(map);
-                //evaluate() 評估結果
+                //剔除後 50%
                 robots.Selection(map.GoalPoint);
+                //交配
                 robots.Crossover();
-                robots.Mutation();
+                //突變
+                robots.Mutation(MUTATION_RATE);
             }
         }
     }
