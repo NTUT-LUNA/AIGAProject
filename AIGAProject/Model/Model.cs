@@ -9,6 +9,7 @@ namespace AIGAProject.Model
         public void LoadTestMap()
         {
             Simulation simulation = new Simulation(maps.TestMap);
+            simulation.StartSimulation();
         }
     }
 }
