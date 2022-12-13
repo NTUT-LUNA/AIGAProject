@@ -7,6 +7,9 @@ namespace AIGAProject.Model
     class Robot
     {
         Point _location;
+        Point _startLocation;
+        int _nowDoingStepNo = 0;
+
         public Point Location
         {
             get
@@ -20,11 +23,28 @@ namespace AIGAProject.Model
             get;
         }
 
+        public Step NowDoingStep
+        {
+            get
+            {
+                return GetStep(_nowDoingStepNo);
+            }
+        }
+
+        public Point NextLocation
+        {
+            get
+            {
+                return _location.NextLocation(NowDoingStep.Direction);
+            }
+        }
+
         Steps _steps;
 
         public Robot(Point startLocation, int radius, int stepCounts)
         {
             Radius = radius;
+            _startLocation = startLocation;
             _location = startLocation;
             _steps = new Steps(stepCounts); //亂數
         }
@@ -32,17 +52,26 @@ namespace AIGAProject.Model
         public Robot(Point startLocation, int radius, Steps steps)
         {
             Radius = radius;
+            _startLocation = startLocation;
             _location = startLocation;
             _steps = steps;
         }
 
-        public void StartToMove(Map map)
+        public void MoveTillTheEnd(Map map)
         {
-            for (int nowDoingStepNo = 0; nowDoingStepNo < _steps.Count; nowDoingStepNo++)
+            for (int i = _nowDoingStepNo; i < _steps.Count; i++)
             {
-                Step step = _steps.GetStep(nowDoingStepNo);
-                _location = map.GetLocationResult(Location, step);
+                MoveOnce(map);
             }
+        }
+
+        public void MoveOnce(Map map)
+        {
+            if (map.LocationVaild(NextLocation, Radius))
+            {
+                _location = NextLocation;
+            }
+            _nowDoingStepNo++;
         }
 
         public Step GetStep(int index)
@@ -62,6 +91,12 @@ namespace AIGAProject.Model
                     _steps.SetStep(i, step);
                 }
             }
+        }
+
+        public void Reset()
+        {
+            _nowDoingStepNo = 0;
+            _location = _startLocation;
         }
     }
 
@@ -87,7 +122,7 @@ namespace AIGAProject.Model
         {
             foreach (Robot robot in _robotList)
             {
-                robot.StartToMove(map);
+                robot.MoveTillTheEnd(map);
             }
         }
 
@@ -168,6 +203,14 @@ namespace AIGAProject.Model
             foreach (Robot robot in _robotList)
             {
                 robot.Mutation(mutationRate);
+            }
+        }
+
+        public void Reset()
+        {
+            foreach (Robot robot in _robotList)
+            {
+                robot.Reset();
             }
         }
     }

@@ -24,6 +24,8 @@ namespace AIGAProject.Model
         {
             for (int generations = 0; generations < NUMBER_OF_GENERATIONS; generations++)
             {
+                //機器人重設（步數、地點）
+                robots.Reset();
                 //機器人動
                 robots.StartToMove(map);
                 //剔除後 50%

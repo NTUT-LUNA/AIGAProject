@@ -33,197 +33,30 @@ namespace AIGAProject.Model
             get;
         }
 
-        bool IsObstacle(Point point)
+        public bool LocationVaild(Point nextPoint, int robotRadius)
         {
-            return mapArray[point.Y, point.X] == OBSTACLE_CELL;
+            return (!IsObstacle(nextPoint, robotRadius) && !OutOfBound(nextPoint, robotRadius));
         }
 
-        Point MoveNorthWay(Point startLocation, Step step)
+        bool IsObstacle(Point point, int robotRadius)
         {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.Y++;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
+            return  mapArray[point.Y + robotRadius, point.X] == OBSTACLE_CELL ||
+                    mapArray[point.Y + robotRadius, point.X + robotRadius]  == OBSTACLE_CELL ||
+                    mapArray[point.Y, point.X + robotRadius]  == OBSTACLE_CELL ||
+                    mapArray[point.Y - robotRadius, point.X + robotRadius]  == OBSTACLE_CELL ||
+                    mapArray[point.Y - robotRadius, point.X] == OBSTACLE_CELL ||
+                    mapArray[point.Y - robotRadius, point.X - robotRadius]  == OBSTACLE_CELL ||
+                    mapArray[point.Y, point.X - robotRadius]  == OBSTACLE_CELL ||
+                    mapArray[point.Y + robotRadius, point.X - robotRadius]  == OBSTACLE_CELL
+                    ;
         }
 
-        Point MoveNorthEastWay(Point startLocation, Step step)
+        bool OutOfBound(Point p, int robotRadius)
         {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X++;
-                nextPoint.Y++;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveEastWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X++;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveSouthEastWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X++;
-                nextPoint.Y--;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveSouthWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.Y--;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveSouthWestWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X--;
-                nextPoint.Y--;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveWestWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X--;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        Point MoveNorthWestWay(Point startLocation, Step step)
-        {
-            Point point = startLocation;
-            for (int i = 0; i < step.Count; i++)
-            {
-                Point nextPoint = point;
-                nextPoint.X--;
-                nextPoint.Y++;
-                if (OutOfBound(nextPoint))
-                {
-                    return point;
-                }
-                if (!IsObstacle(nextPoint))
-                {
-                    point = nextPoint;
-                }
-            }
-            return point;
-        }
-
-        bool OutOfBound(Point p)
-        {
-            return (p.X < 0 ||
-                    p.Y < 0 ||
-                    p.X >= Width ||
-                    p.Y >= Height);
-        }
-
-        public Point GetLocationResult(Point startLocation, Step step)
-        {
-            switch (step.Direction)
-            {
-                case Direction.N:
-                    return MoveNorthWay(startLocation, step);                    
-                case Direction.NE:
-                    return MoveNorthEastWay(startLocation, step);                    
-                case Direction.E:
-                    return MoveEastWay(startLocation, step);                    
-                case Direction.SE:
-                    return MoveSouthEastWay(startLocation, step);                    
-                case Direction.S:
-                    return MoveSouthWay(startLocation, step);                    
-                case Direction.SW:
-                    return MoveSouthWestWay(startLocation, step);                    
-                case Direction.W:
-                    return MoveWestWay(startLocation, step);                    
-                case Direction.NW:
-                    return MoveNorthWestWay(startLocation, step);                    
-            }
-            return startLocation;
+            return (p.X - robotRadius < 0 ||
+                    p.Y - robotRadius < 0 ||
+                    p.X + robotRadius >= Width ||
+                    p.Y + robotRadius >= Height);
         }
 
         public Map(string path)
