@@ -17,10 +17,10 @@ namespace AIGAProject.Model
         public Simulation(Map map)
         {
             this.map = map;
-            robots = new Robots(map, ROBOT_RADIUS, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
+            robots = new Robots(map.StartPoint, ROBOT_RADIUS, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
         }
 
-        public void StartSimulation()
+        public void Start()
         {
             for (int generations = 0; generations < NUMBER_OF_GENERATIONS; generations++)
             {

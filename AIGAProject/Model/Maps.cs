@@ -93,13 +93,16 @@ namespace AIGAProject.Model
 
     class Maps
     {
-        Map testMap = new Map("../../../../ai_map/mytest.csv");
+        Map _testMap = new Map("../../../../ai_map/mytest.csv");
 
-        public Map TestMap
+        public Map GetMap(MapType type)
         {
-            get
+            switch (type)
             {
-                return testMap;
+                case MapType.Test:
+                    return _testMap;
+                default:
+                    throw new MyException();
             }
         }
     }

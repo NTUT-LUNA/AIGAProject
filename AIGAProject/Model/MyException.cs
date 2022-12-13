@@ -4,7 +4,11 @@ using System.Text;
 
 namespace AIGAProject.Model
 {
-    public interface IGraphics
+    class MyException : Exception
     {
+        public MyException()
+        {
+
+        }
     }
 }

@@ -6,10 +6,15 @@ namespace AIGAProject.Model
     {
         Maps maps = new Maps();
 
-        public void LoadTestMap()
+        public void LoadMap(MapType type)
         {
-            Simulation simulation = new Simulation(maps.TestMap);
-            simulation.StartSimulation();
+            Simulation simulation = new Simulation(maps.GetMap(type));
+            simulation.Start();
+        }
+
+        public void Draw(IGraphics graphics)
+        {
+
         }
     }
 }

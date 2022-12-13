@@ -20,7 +20,7 @@ namespace AIGAProject.Model.Tests
         [TestMethod()]
         public void LoadTestMapTest()
         {
-            model.LoadTestMap();
+            model.LoadMap();
         }
     }
 }
