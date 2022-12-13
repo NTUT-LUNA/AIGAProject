@@ -35,7 +35,7 @@ namespace AIGAProject.Model
 
         public bool LocationVaild(Point nextPoint, int robotRadius)
         {
-            return (!IsObstacle(nextPoint, robotRadius) && !OutOfBound(nextPoint, robotRadius));
+            return (!OutOfBound(nextPoint, robotRadius) && !IsObstacle(nextPoint, robotRadius));
         }
 
         bool IsObstacle(Point point, int robotRadius)
