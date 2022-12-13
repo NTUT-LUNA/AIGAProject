@@ -21,7 +21,6 @@ namespace AIGAProject.Model.Tests
         public void LoadTestMapTest()
         {
             model.LoadTestMap();
-            Assert.Fail();
         }
     }
 }

@@ -15,16 +15,23 @@ namespace AIGAProject.Model
             }
         }
 
+        public int Radius
+        {
+            get;
+        }
+
         Steps _steps;
 
-        public Robot(Point startLocation, int stepCounts)
+        public Robot(Point startLocation, int radius, int stepCounts)
         {
+            Radius = radius;
             _location = startLocation;
             _steps = new Steps(stepCounts); //亂數
         }
 
-        public Robot(Point startLocation, Steps steps)
+        public Robot(Point startLocation, int radius, Steps steps)
         {
+            Radius = radius;
             _location = startLocation;
             _steps = steps;
         }
@@ -63,14 +70,16 @@ namespace AIGAProject.Model
         List<Robot> _robotList = new List<Robot>();
         Point _startLocation;
         int _stepCounts;
+        int _robotRadius;
 
-        public Robots(Point startLocation, int robotCounts, int stepCounts)
+        public Robots(Point startLocation, int robotRadius, int robotCounts, int stepCounts)
         {
+            _robotRadius = robotRadius;
             _startLocation = startLocation;
             _stepCounts = stepCounts;
             for (int i = 0; i < robotCounts; i++)
             {
-                _robotList.Add(new Robot(startLocation, stepCounts));
+                _robotList.Add(new Robot(startLocation, robotRadius, stepCounts));
             }
         }
 
@@ -151,7 +160,7 @@ namespace AIGAProject.Model
             {
                 newSteps.Add(robotMama.GetStep(i));
             }
-            return new Robot(_startLocation, newSteps);
+            return new Robot(_startLocation, _robotRadius, newSteps);
         }
 
         public void Mutation(double mutationRate)
