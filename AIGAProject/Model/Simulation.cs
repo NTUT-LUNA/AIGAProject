@@ -8,6 +8,7 @@ namespace AIGAProject.Model
     {
         Robots robots;
         Map map;
+        const int ROBOT_RADIUS = 1;
         const int NUMBER_OF_ROBOTS = 10;
         const int NUMBER_OF_STEPS = 10;
         const int NUMBER_OF_GENERATIONS = 10;
@@ -16,7 +17,7 @@ namespace AIGAProject.Model
         public Simulation(Map map)
         {
             this.map = map;
-            robots = new Robots(map.StartPoint, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
+            robots = new Robots(map.StartPoint, ROBOT_RADIUS, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
         }
 
         public void StartSimulation()

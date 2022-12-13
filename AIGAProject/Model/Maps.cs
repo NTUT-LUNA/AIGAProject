@@ -45,6 +45,10 @@ namespace AIGAProject.Model
             {
                 Point nextPoint = point;
                 nextPoint.Y++;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -61,6 +65,10 @@ namespace AIGAProject.Model
                 Point nextPoint = point;
                 nextPoint.X++;
                 nextPoint.Y++;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -76,6 +84,10 @@ namespace AIGAProject.Model
             {
                 Point nextPoint = point;
                 nextPoint.X++;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -92,6 +104,10 @@ namespace AIGAProject.Model
                 Point nextPoint = point;
                 nextPoint.X++;
                 nextPoint.Y--;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -107,6 +123,10 @@ namespace AIGAProject.Model
             {
                 Point nextPoint = point;
                 nextPoint.Y--;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -123,6 +143,10 @@ namespace AIGAProject.Model
                 Point nextPoint = point;
                 nextPoint.X--;
                 nextPoint.Y--;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -138,6 +162,10 @@ namespace AIGAProject.Model
             {
                 Point nextPoint = point;
                 nextPoint.X--;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
@@ -154,12 +182,24 @@ namespace AIGAProject.Model
                 Point nextPoint = point;
                 nextPoint.X--;
                 nextPoint.Y++;
+                if (OutOfBound(nextPoint))
+                {
+                    return point;
+                }
                 if (!IsObstacle(nextPoint))
                 {
                     point = nextPoint;
                 }
             }
             return point;
+        }
+
+        bool OutOfBound(Point p)
+        {
+            return (p.X < 0 ||
+                    p.Y < 0 ||
+                    p.X >= Width ||
+                    p.Y >= Height);
         }
 
         public Point GetLocationResult(Point startLocation, Step step)
