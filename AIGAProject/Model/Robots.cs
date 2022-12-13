@@ -33,14 +33,14 @@ namespace AIGAProject.Model
         {
             for (int nowDoingStepNo = 0; nowDoingStepNo < _steps.Count; nowDoingStepNo++)
             {
-                Step step = _steps.FullSteps[nowDoingStepNo];
+                Step step = _steps.GetStep(nowDoingStepNo);
                 _location = map.GetLocationResult(Location, step);
             }
         }
 
         public Step GetStep(int index)
         {
-            return _steps.FullSteps[index];
+            return _steps.GetStep(index);
         }
 
         public void Mutation(double mutationRate)
@@ -63,13 +63,6 @@ namespace AIGAProject.Model
         List<Robot> _robotList = new List<Robot>();
         Point _startLocation;
         int _stepCounts;
-        public List<Robot> RobotList
-        {
-            get
-            {
-                return _robotList;
-            }
-        }
 
         public Robots(Point startLocation, int robotCounts, int stepCounts)
         {

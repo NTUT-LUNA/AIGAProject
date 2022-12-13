@@ -18,9 +18,9 @@ namespace AIGAProject.Model.Tests
         }
 
         [TestMethod()]
-        public void LoadMapTest()
+        public void LoadTestMapTest()
         {
-            model.LoadMap();
+            model.LoadTestMap();
             Assert.Fail();
         }
     }

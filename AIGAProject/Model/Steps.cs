@@ -38,14 +38,6 @@ namespace AIGAProject.Model
             }
         }
 
-        public List<Step> FullSteps
-        {
-            get
-            {
-                return _steps;
-            }
-        }
-
         public Steps(int counts)
         {
             for (int i = 0; i < counts; i++)
@@ -67,6 +59,11 @@ namespace AIGAProject.Model
         public void SetStep(int index, Step step)
         {
             _steps[index] = step;
+        }
+
+        public Step GetStep(int index)
+        {
+            return _steps[index];
         }
     }
 }
