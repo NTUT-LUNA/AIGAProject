@@ -17,7 +17,7 @@ namespace AIGAProject.Model
         public Simulation(Map map)
         {
             this.map = map;
-            robots = new Robots(map.StartPoint, ROBOT_RADIUS, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
+            robots = new Robots(map, ROBOT_RADIUS, NUMBER_OF_ROBOTS, NUMBER_OF_STEPS);
         }
 
         public void StartSimulation()
@@ -27,9 +27,9 @@ namespace AIGAProject.Model
                 //機器人重設（步數、地點）
                 robots.Reset();
                 //機器人動
-                robots.StartToMove(map);
+                robots.StartToMove();
                 //剔除後 50%
-                robots.Selection(map.GoalPoint);
+                robots.Selection(SelectMode.Distance);
                 //交配
                 robots.Crossover();
                 //突變

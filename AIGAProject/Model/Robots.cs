@@ -106,6 +106,7 @@ namespace AIGAProject.Model
         Point _startLocation;
         int _stepCounts;
         int _robotRadius;
+        Map _map;
 
         public Robots(Point startLocation, int robotRadius, int robotCounts, int stepCounts)
         {
@@ -118,21 +119,34 @@ namespace AIGAProject.Model
             }
         }
 
-        public void StartToMove(Map map)
+        public void StartToMove()
         {
             foreach (Robot robot in _robotList)
             {
-                robot.MoveTillTheEnd(map);
+                robot.MoveTillTheEnd(_map);
             }
         }
 
         //剔除前 50% 離最遠的傢伙
-        public void Selection(Point goalPoint)
+        public void Selection(SelectMode mode)
+        {
+            //不知道這個 switch 可以怎麼多型?
+            switch (mode)
+            {
+                case SelectMode.Distance:
+                    SelectDistance();
+                    break;
+                case SelectMode.Area:
+                    break;
+            }
+        }
+
+        void SelectDistance()
         {
             int count = _robotList.Count;
             for (int i = 0; i < count / 2; i++)
             {
-                int index = FindMaxDistanceRobotIndex(goalPoint);
+                int index = FindMaxDistanceRobotIndex(_map.GoalPoint);
                 _robotList.RemoveAt(index);
             }
         }
